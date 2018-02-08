@@ -1,0 +1,5 @@
+Warszawa 52 21
+New_York 40.5 -74
+Berlin 53 13.5
+Buenos_Aires -34.6 -58.38
+Mexico_City 19.43 -99.13
