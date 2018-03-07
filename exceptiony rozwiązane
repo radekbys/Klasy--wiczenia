@@ -1,0 +1,333 @@
+#include <iostream>
+#include <exception>
+#include <string>
+#include <ctime>
+
+using namespace std;
+
+
+//******************************* Zadanie  4 *****************************************//
+void Zadanie4()
+{
+	try {
+		while (true) {
+			new int[100000000ul];
+		}
+	}
+	catch (const std::bad_alloc& e)
+	{
+		std::cout << "Allocation failed: " << e.what() << '\n';
+	}
+}
+//******************************************************************************//
+
+
+//******************************* Zadanie  3 *****************************************//
+/////////////////////// Klasy wyjątków //////////////////////////////////////////////
+class MathError
+{
+public:
+	virtual void printInfo() = 0;
+};
+
+
+class DivideByZero : public MathError
+{
+public:
+	void printInfo() { std::cout << "Nie mozna dzielic przez zero. \n"; };
+};
+
+
+class NegativeNumber : public MathError
+{
+public:
+	void printInfo() { std::cout << "Liczba ujemna. \n"; };
+};
+
+class OutOfRange : public MathError
+{
+public:
+	void printInfo() { std::cout << "Liczba spoza zakresu. \n"; };
+};
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////// Klasa matematyczna z przykładowymi operacjami /////////////////
+class MathLibrary
+{
+public:
+	static double divideTwoNumbers(double a, double b);
+	static int factorial(int n);
+	static int abs(int n);
+};
+
+double MathLibrary::divideTwoNumbers(double a, double b)
+{
+	// wyrzucenie wyjątku
+	if (b == 0)
+	{
+		throw DivideByZero();
+	}
+	else
+	{
+		return a / b;
+	}
+}
+
+int MathLibrary::factorial(int n)
+{
+	// wyrzucenie wyjątku
+	if (n < 0)
+	{
+		throw NegativeNumber();
+	}
+	else if (n == 0 || n == 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return n*factorial(n - 1);
+	}
+}
+
+int MathLibrary::abs(int n)
+{
+	// wyrzucenie wyjątku
+	if (n > INT_MAX || n < -INT_MAX)
+	{
+		throw OutOfRange();
+	}
+	if (n >= 0)
+	{
+		return n;
+	}
+	else if(n < 0)
+	{
+		return -n;
+	}
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////Funckja realizująca zadanie 3//////////////////////////////
+
+void Zadanie3()
+{
+	try
+	{
+		std::cout << MathLibrary::factorial(-3) << "\n";
+		std::cout << MathLibrary::divideTwoNumbers(2, 0) << "\n";
+		std::cout << MathLibrary::abs(-0xfffffffff) << "\n";
+	}
+	catch (MathError& e)
+	{
+		e.printInfo();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//**********************************************************************************//
+
+//******************************* Zadanie 2 ****************************************//
+class Pacjent
+{
+private:
+	int sickLevel;
+public:
+	Pacjent() : sickLevel(rand() % 100) {};
+	int getInformation() { return sickLevel; };
+};
+
+class LekarzOgolny 
+{
+protected:
+	int healinglevel;
+public:
+	LekarzOgolny() : healinglevel(25) {};
+	void curePacjent(Pacjent& p)
+	{
+		//rzucenie wyjatku
+		if (p.getInformation() > healinglevel)
+		{
+			throw p;
+		}
+	}
+};
+
+class LekarzSpecjalista : public LekarzOgolny
+{
+public:
+	LekarzSpecjalista() { healinglevel += 20; };
+};
+
+
+class LekarzChirurg : public LekarzSpecjalista
+{
+public:
+	LekarzChirurg() { healinglevel += 30; };
+};
+
+//funkcja realizująca zadanie 2
+void Zadanie2()
+{
+	Pacjent choryRomek;
+	LekarzOgolny drAndrzej;
+	LekarzSpecjalista drTomasz;
+	LekarzChirurg drWieslaw;
+
+	try
+	{
+		cout << "Jest Pan obslugiwany przez lekarza ogolnego \n";
+		drAndrzej.curePacjent(choryRomek);
+		cout << "Jest Pan zdrowy \n";
+	}
+	catch (Pacjent& p)
+	{
+		try
+		{
+			cout << "Jest Pan obslugiwany przez lekarza specjaliste \n";
+			drTomasz.curePacjent(choryRomek);
+			cout << "Jest Pan zdrowy. Zalecany 2 tygodniowy urlop \n";
+		}
+		catch (Pacjent& p)
+		{
+			try
+			{
+				cout << "Jest Pan obslugiwany przez lekarza chirurga \n";
+				drWieslaw.curePacjent(choryRomek);
+				cout << "Otarl sie Pan o smierc. Prosze na siebie uwazac \n";
+			}
+			catch (...)
+			{
+				cout << "Niestety nie potrafimy panu pomoc \n";
+			}
+
+		}
+		
+	}
+}
+//******************************************************************************//
+
+
+//************************Zadanie1*************************************
+class czerwonaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	czerwonaRakieta() : wiadomosc("zlapali nas")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+class zielonaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	zielonaRakieta() : wiadomosc("przejelismy skarb")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+class zoltaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	zoltaRakieta() : wiadomosc("potrzbujemy wsparcia")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+void ruszajmy()
+{
+	czerwonaRakieta A;
+	zielonaRakieta B;
+	zoltaRakieta C;
+
+	int x = rand() % 8;
+
+	if (x == 0 || x == 1)
+	{
+		throw A;
+	}
+
+	if (x == 2 || x == 3)
+	{
+		throw B;
+	}
+
+	if (x == 4 || x == 5)
+	{
+		throw C;
+	}
+	else
+	{
+		throw 0;
+	}
+}
+
+//funkcja realizująca zadanie 1
+void Zadanie1()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		try
+		{
+			ruszajmy();
+		}
+		catch (czerwonaRakieta x)
+		{
+			cout << "mam wiadomosc: " << x.wypisz() << endl;
+		}
+
+		catch (zielonaRakieta x)
+		{
+			cout << "mam wiadomosc: " << x.wypisz() << endl;
+		}
+		catch (zoltaRakieta x)
+		{
+			cout << "mam wiadomosc: " << x.wypisz() << endl;
+		}
+		catch (...)
+		{
+			cout << "cos zlapalem ale nie wiem co" << endl;
+		}
+	}
+}
+//***********************************************************************
+
+
+
+
+int main()
+{
+	srand(time(NULL));
+
+	//Zadanie1();
+	//Zadanie2();
+	Zadanie3();
+	//Zadanie4();
+
+
+
+	system("PAUSE");
+	return 0;
+}
+
