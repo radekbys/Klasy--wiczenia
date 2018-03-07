@@ -1,0 +1,249 @@
+#include <iostream>
+#include <exception>
+#include <string>
+#include <ctime>
+
+using namespace std;
+
+
+//******************************* Zadanie  4 *****************************************//
+void Zadanie4()
+{
+
+}
+//******************************************************************************//
+
+
+//******************************* Zadanie  3 *****************************************//
+/////////////////////// Klasy wyjątków //////////////////////////////////////////////
+class MathError
+{
+public:
+	virtual void printInfo() = 0;
+};
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////// Klasa matematyczna z przykładowymi operacjami /////////////////
+class MathLibrary
+{
+public:
+	static double divideTwoNumbers(double a, double b);
+	static int factorial(int n);
+	static int abs(int n);
+};
+
+double MathLibrary::divideTwoNumbers(double a, double b)
+{
+
+		return a / b;
+	
+}
+
+int MathLibrary::factorial(int n)
+{
+	if (n == 0 || n == 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return n*factorial(n - 1);
+	}
+}
+
+int MathLibrary::abs(int n)
+{
+	if (n >= 0)
+	{
+		return n;
+	}
+	else if (n < 0)
+	{
+		return -n;
+	}
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////Funckja realizująca zadanie 3//////////////////////////////
+
+void Zadanie3()
+{
+	try
+	{
+		std::cout << MathLibrary::factorial(-3) << "\n";
+		std::cout << MathLibrary::divideTwoNumbers(2, 0) << "\n";
+		std::cout << MathLibrary::abs(-0xfffffffff) << "\n";
+	}
+	catch (MathError& e)
+	{
+		e.printInfo();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//**********************************************************************************//
+
+//******************************* Zadanie 2 ****************************************//
+class Pacjent
+{
+private:
+	int sickLevel;
+public:
+	Pacjent() : sickLevel(rand() % 100) {};
+	int getInformation() { return sickLevel; };
+};
+
+class LekarzOgolny
+{
+protected:
+	int healinglevel;
+public:
+	LekarzOgolny() : healinglevel(25) {};
+	void curePacjent(Pacjent& p)
+	{
+		//rzucenie wyjatku
+		if (p.getInformation() > healinglevel)
+		{
+			throw p;
+		}
+	}
+};
+
+class LekarzSpecjalista : public LekarzOgolny
+{
+public:
+	LekarzSpecjalista() { healinglevel += 20; };
+};
+
+
+class LekarzChirurg : public LekarzSpecjalista
+{
+public:
+	LekarzChirurg() { healinglevel += 30; };
+};
+
+//funkcja realizująca zadanie 2
+void Zadanie2()
+{
+	Pacjent choryRomek;
+	LekarzOgolny drAndrzej;
+	LekarzSpecjalista drTomasz;
+	LekarzChirurg drWieslaw;
+
+
+}
+//******************************************************************************//
+
+
+//************************Zadanie1*************************************
+class czerwonaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	czerwonaRakieta() : wiadomosc("zlapali nas")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+class zielonaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	zielonaRakieta() : wiadomosc("przejelismy skarb")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+class zoltaRakieta
+{
+private:
+	string wiadomosc;
+public:
+	zoltaRakieta() : wiadomosc("potrzbujemy wsparcia")
+	{}
+
+	string wypisz()
+	{
+		return wiadomosc;
+	}
+};
+
+void ruszajmy()
+{
+	czerwonaRakieta A;
+	zielonaRakieta B;
+	zoltaRakieta C;
+
+	int x = rand() % 8;
+
+	if (x < 2)
+		throw A;
+	if (x < 4)
+		throw B;
+	if (x < 6)
+		throw C;
+
+	throw x;
+
+}
+
+void Zadanie1()
+{
+
+	try {
+		ruszajmy;
+	}
+	catch (czerwonaRakieta mess)
+	{
+		mess.wypisz();
+	}
+	catch (zielonaRakieta mess)
+	{
+		mess.wypisz();
+	}
+	catch (zoltaRakieta mess)
+	{
+		mess.wypisz();
+	}
+	catch ()
+	{
+		cout << "nie wiadomo co" << endl;
+		exit(0);
+	}
+
+}
+//***********************************************************************
+
+
+
+int main()
+{
+	srand(time(NULL));
+
+	Zadanie1();
+	//Zadanie2();
+	//Zadanie3();
+	//Zadanie4();
+
+
+
+	system("PAUSE");
+	return 0;
+}
