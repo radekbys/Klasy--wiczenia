@@ -41,8 +41,8 @@ public:
 double MathLibrary::divideTwoNumbers(double a, double b)
 {
 
-		return a / b;
-	
+	return a / b;
+
 }
 
 int MathLibrary::factorial(int n)
@@ -207,25 +207,25 @@ void ruszajmy()
 void Zadanie1()
 {
 
-	try {
-		ruszajmy;
+	try 
+	{
+		ruszajmy();
 	}
 	catch (czerwonaRakieta mess)
 	{
-		mess.wypisz();
+		cout << mess.wypisz() << endl;
 	}
 	catch (zielonaRakieta mess)
 	{
-		mess.wypisz();
+		cout << mess.wypisz() << endl;
 	}
 	catch (zoltaRakieta mess)
 	{
-		mess.wypisz();
+		cout << mess.wypisz() << endl;
 	}
-	catch ()
+	catch (int ex)
 	{
-		cout << "nie wiadomo co" << endl;
-		exit(0);
+		cout << "nic nie wiadomo" << endl;
 	}
 
 }
@@ -237,7 +237,7 @@ int main()
 {
 	srand(time(NULL));
 
-	Zadanie1();
+	//Zadanie1();
 	//Zadanie2();
 	//Zadanie3();
 	//Zadanie4();
